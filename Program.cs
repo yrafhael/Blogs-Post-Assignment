@@ -32,7 +32,7 @@ try
                 AddBlog(db);
                 break;
             case "3":
-                // method to create post
+                CreatePost(db);
                 break;
             case "4":
                 // method to display post
@@ -70,4 +70,35 @@ void AddBlog(BloggingContext db)
     var blog = new Blog { Name = name };
     db.AddBlog(blog);
     logger.Info("Blog added - {name}", name);
+}
+
+void CreatePost(BloggingContext db)
+{
+    // Display all blogs
+    var blogs = db.Blogs.ToList();
+    Console.WriteLine("Select a blog to post:");
+    for (int i = 0; i < blogs.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {blogs[i].Name}");
+    }
+
+    // Get user input for blog selection
+    int blogIndex;
+    while (!int.TryParse(Console.ReadLine(), out blogIndex) || blogIndex < 1 || blogIndex > blogs.Count)
+    {
+        Console.WriteLine("Invalid input. Please try again.");
+    }
+    var selectedBlog = blogs[blogIndex - 1];
+
+    // Get post details from user
+    Console.Write("Enter post title: ");
+    var title = Console.ReadLine();
+    Console.Write("Enter post content: ");
+    var content = Console.ReadLine();
+
+    // Create and save the post
+    var post = new Post { Title = title, Content = content, BlogId = selectedBlog.BlogId };
+    db.Posts.Add(post);
+    db.SaveChanges();
+    logger.Info("Post added - {title}", title);
 }
