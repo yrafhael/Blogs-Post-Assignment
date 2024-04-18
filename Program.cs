@@ -10,24 +10,49 @@ logger.Info("Program started");
 
 try
 {
-    Console.WriteLine("Please select an option:");
+    var db = new BloggingContext();
+
+    while (true)
+    {
+        Console.WriteLine("Please select an option:");
         Console.WriteLine("1. Display all blogs");
         Console.WriteLine("2. Add a new blog");
         Console.WriteLine("3. Create a new post");
         Console.WriteLine("4. Display posts");
         Console.WriteLine("5. Exit");
 
-    // Create and save a new Blog
-    Console.Write("Enter a name for a new Blog: ");
-    var name = Console.ReadLine();
+        var option = Console.ReadLine();
 
-    var blog = new Blog { Name = name };
+        switch (option)
+        {
+            case "1":
+                DisplayAllBlogs(db);
+                break;
+            case "2":
+                // method to add blog
+                break;
+            case "3":
+                // method to create post
+                break;
+            case "4":
+                // method to display post
+                break;
+            case "5":
+                logger.Info("Program ended");
+                return;
+            default:
+                Console.WriteLine("Invalid option. Please try again.");
+                break;
+        }
+    }
+}
+catch (Exception ex)
+{
+    logger.Error(ex.Message);
+}
 
-    var db = new BloggingContext();
-    db.AddBlog(blog);
-    logger.Info("Blog added - {name}", name);
-
-    // Display all Blogs from the database
+void DisplayAllBlogs(BloggingContext db)
+{
     var query = db.Blogs.OrderBy(b => b.Name);
 
     Console.WriteLine("All blogs in the database:");
@@ -36,9 +61,3 @@ try
         Console.WriteLine(item.Name);
     }
 }
-catch (Exception ex)
-{
-    logger.Error(ex.Message);
-}
-
-logger.Info("Program ended");
