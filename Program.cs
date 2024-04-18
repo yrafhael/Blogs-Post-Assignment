@@ -29,7 +29,7 @@ try
                 DisplayAllBlogs(db);
                 break;
             case "2":
-                // method to add blog
+                AddBlog(db);
                 break;
             case "3":
                 // method to create post
@@ -60,4 +60,14 @@ void DisplayAllBlogs(BloggingContext db)
     {
         Console.WriteLine(item.Name);
     }
+}
+
+void AddBlog(BloggingContext db)
+{
+    Console.Write("Enter a name for a new Blog: ");
+    var name = Console.ReadLine();
+
+    var blog = new Blog { Name = name };
+    db.AddBlog(blog);
+    logger.Info("Blog added - {name}", name);
 }
