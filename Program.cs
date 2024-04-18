@@ -10,6 +10,12 @@ logger.Info("Program started");
 
 try
 {
+    Console.WriteLine("Please select an option:");
+        Console.WriteLine("1. Display all blogs");
+        Console.WriteLine("2. Add a new blog");
+        Console.WriteLine("3. Create a new post");
+        Console.WriteLine("4. Display posts");
+        Console.WriteLine("5. Exit");
 
     // Create and save a new Blog
     Console.Write("Enter a name for a new Blog: ");
