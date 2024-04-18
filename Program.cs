@@ -35,7 +35,7 @@ try
                 CreatePost(db);
                 break;
             case "4":
-                // method to display post
+                DisplayPosts(db);
                 break;
             case "5":
                 logger.Info("Program ended");
@@ -101,4 +101,33 @@ void CreatePost(BloggingContext db)
     db.Posts.Add(post);
     db.SaveChanges();
     logger.Info("Post added - {title}", title);
+}
+
+void DisplayPosts(BloggingContext db)
+{
+    // Display all blogs
+    var blogs = db.Blogs.ToList();
+    Console.WriteLine("Select a blog to view posts:");
+    for (int i = 0; i < blogs.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {blogs[i].Name}");
+    }
+
+    // Get user input for blog selection
+    int blogIndex;
+    while (!int.TryParse(Console.ReadLine(), out blogIndex) || blogIndex < 1 || blogIndex > blogs.Count)
+    {
+        Console.WriteLine("Invalid input. Please try again.");
+    }
+    var selectedBlog = blogs[blogIndex - 1];
+
+    // Display posts for the selected blog
+    var posts = db.Posts.Where(p => p.BlogId == selectedBlog.BlogId).ToList();
+    Console.WriteLine($"Posts for {selectedBlog.Name} ({posts.Count}):");
+    foreach (var post in posts)
+    {
+        Console.WriteLine($"- {post.Title} ({post.Blog.Name})");
+        Console.WriteLine(post.Content);
+        Console.WriteLine();
+    }
 }
